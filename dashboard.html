@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Detection Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/datatables@1.11.5/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/datatables@1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f1f9f4; /* Same as registration page */
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            max-width: 150px;
+        }
+        .container {
+            max-width: 1200px;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1, h4 {
+            color: #2c3e50;
+        }
+
+        .metrics {
+            margin-top: 20px;
+        }
+
+        .metrics p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .pie-chart-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .pie-chart-container img {
+            width: 400px;
+            height: 400px;
+            border-radius: 8px;
+        }
+
+        /* Table Styling */
+        .table {
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #ffffff;
+        }
+
+        .table-striped tbody tr:hover {
+            background-color: #e9ecef;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* 3D Effect on Table Rows */
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .card {
+            margin-top: 30px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #eef1f4;
+            border-top: 1px solid #ccc;
+        }
+
+        footer img {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+        }
+
+        .dashboard-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .footer img {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <h1>Bot Detection Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <!-- Metrics Section -->
+        <div class="metrics">
+            <h4>Request Counts:</h4>
+            <p><strong>Human Requests:</strong> {{ human_count }}</p>
+            <p><strong>Bot Requests:</strong> {{ bot_count }}</p>
+        </div>
+
+        <!-- Pie Chart for Bot Attack Types -->
+        <div class="pie-chart-container">
+            <h4>Bot Attack Types Distribution:</h4>
+            <img src="{{ pie_chart_url }}" alt="Bot Attack Types Pie Chart" />
+        </div>
+
+        <!-- Interactive Request Details Table -->
+        <div class="card">
+            <div class="card-body">
+                <h4>Request Details:</h4>
+                <table id="requestTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Timestamp</th>
+                            <th>Request Type</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in request_details %}
+                        <tr>
+                            <td>{{ request.ip }}</td>
+                            <td>{{ request.timestamp }}</td>
+                            <td>{{ request.type }}</td>
+                            <td>{{ request.details }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Go to Registration Page Button -->
+        <a href="{{ url_for('registration') }}" class="dashboard-btn">Go to Registration Page</a>
+    </div>
+
+    <footer>
+        <p>Bot Detection System | © 2024</p>
+        <img src="{{ url_for('static', filename='footer.png') }}" alt="Footer Image">
+    </footer>
+
+    <script>
+        // Initialize DataTable for interactivity
+        $(document).ready(function() {
+            $('#requestTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true
+            });
+        });
+    </script>
+</body>
+</html>

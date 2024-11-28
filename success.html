@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Registration Success</title>
+<style>
+       body {
+           font-family: Arial, sans-serif;
+           margin: 0;
+           background-color: #f1f9f4;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           height: 100vh;
+       }
+       .container {
+           text-align: center;
+           padding: 30px;
+           background-color: #ffffff;
+           border: 1px solid #ccc;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       }
+       h1 {
+           color: #4CAF50;
+       }
+       p {
+           font-size: 18px;
+           color: #333;
+       }
+       a {
+           display: inline-block;
+           margin-top: 20px;
+           padding: 10px 15px;
+           background-color: #4CAF50;
+           color: white;
+           text-decoration: none;
+           border-radius: 5px;
+       }
+       a:hover {
+           background-color: #45a049;
+       }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Success!</h1>
+<p>Registration successful. Welcome!!</p>
+<a href="{{ url_for('registration') }}">Go Back to Registration</a>
+<a href="{{ url_for('dashboard') }}" style="margin-left: 10px;">Go to Dashboard</a>
+</div>
+</body>
+</html>
